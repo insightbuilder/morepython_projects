@@ -20,13 +20,13 @@ def parse_stdin(delim: str, sections: str):
         # print(line)
         # split the lines with delim
         line_splits = line.split(delim)
-        print(line_splits)
+        # print(line_splits)
         # get the split_len
         split_len = len(line_splits)
         sec1 -= 1
         sec2 -= 1
         select_section = line_splits[sec1:sec2]
-        # print(select_section)
+        print(select_section)
         # print(" ".join(select_section))
 
 
