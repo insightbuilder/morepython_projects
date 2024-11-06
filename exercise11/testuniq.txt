@@ -1,0 +1,21 @@
+one
+two
+three
+40
+four
+ five 
+four
+ six 
+nine
+eight
+two
+10
+nine
+10
+11
+ten
+12
+11
+Forty
+30
+40
