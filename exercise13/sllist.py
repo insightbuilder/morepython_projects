@@ -50,9 +50,13 @@ class SingleLinkedList(object):
                 prev = curr
                 if curr.next:
                     next = curr.next
+                    print("Next is: ", next)
+                    prev = curr
+                    print("Prev is: ", prev)
                     curr = next
-                remove = prev.next
-                prev.next = None
+                    print("Curr is: ", curr)
+                remove = curr.next
+                print("Remove is:", remove)
                 self.end = prev
                 return remove.val
 
@@ -85,21 +89,29 @@ class SingleLinkedList(object):
         elif self.begin == self.end:
             if self.begin.val == obj:
                 return 0
+        # remove the element from list chain, match element
+        # do the reattachment between the prev and next
+        # how to remember the prev node
         else:
             pos = 0
             curr = self.begin
+            prev = None
             while True:
-                prev = curr
-                pos += 1
+                # check if value == tgt
+                if curr.val == obj:
+                    # no need to check if prev is none
+                    prev.next = curr.next
+                    # return pos
+                    return pos
+                # if not move to the next element
                 if curr.next:
-                    if prev.val == obj:
-                        # do the reattachment
-                        next = curr.next
-                        return pos
+                    prev = curr
                     curr = curr.next
+                    # increment only when moving to
+                    # next elment
+                    pos += 1
 
         # if list has > 1 elements, traverse the list to find the element
-        # remove the element from list chain, and do the reattachments
 
     def first(self):
         """Returns a *reference* to the first item, does not remove."""
@@ -123,11 +135,34 @@ class SingleLinkedList(object):
             while curr.next:
                 count += 1
                 curr = curr.next
-            print("Count", count)
+            # print("Count", count)
             return count
 
     def get(self, index):
         """Get the value at index."""
+        # print("Count in get: ", self.count())
+        if self.count() < index:
+            return None
+        else:
+            pos = 0
+            curr = self.begin
+            while pos != index and curr.next:
+                curr = curr.next
+                pos += 1
+            return curr.val
 
-    def dump(self, mark):
+    def dump(self):
         """Debugging function that dumps the contents of the list."""
+        if self.begin is None:
+            return "Empty List"
+        elif self.begin == self.end:
+            return self.begin.val
+        else:
+            out_string = self.begin.val
+            curr = self.begin
+            while True:
+                if curr.next:
+                    out_string += f" | {curr.next.val}"
+                    curr = curr.next
+                else:
+                    return out_string
