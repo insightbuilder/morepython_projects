@@ -113,6 +113,12 @@ def ask_input_nonum():
         print(temp)
 
 
+def add_num(text: str, idx: int):
+    if text != "\n":
+        out = f"{idx} {text}"
+        return out
+
+
 def ask_input_num():
     """Echos the input back to user with numbers"""
     idx = 0
