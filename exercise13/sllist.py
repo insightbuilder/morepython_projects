@@ -44,21 +44,22 @@ class SingleLinkedList(object):
             # that means need to traverse from the start
             # with the objective of capturing the node prev 2 last
             curr = self.begin
-
+            # a -> b -> c ->d
+            prev = None
             while True:
                 # print("while in pop")
-                prev = curr
                 if curr.next:
-                    next = curr.next
-                    print("Next is: ", next)
+                    # print(f"Printing curr: {curr}")
+                    # print(f"Printing prev: {prev}")
                     prev = curr
-                    print("Prev is: ", prev)
-                    curr = next
-                    print("Curr is: ", curr)
-                remove = curr.next
-                print("Remove is:", remove)
-                self.end = prev
-                return remove.val
+                    curr = curr.next
+                else:
+                    remove = curr
+                    # print("Remove is:", remove)
+                    # print("prev is:", prev)
+                    prev.next = None
+                    self.end = prev
+                    return remove.val
 
     def shift(self, obj):
         """Another name for push."""
@@ -88,7 +89,15 @@ class SingleLinkedList(object):
         # if begin == end and equal to obj, return it and clean list
         elif self.begin == self.end:
             if self.begin.val == obj:
+                self.begin = self.end = None
                 return 0
+        # if self.begin is equal to obj then return 0
+        # and assign self.begin to its next
+
+        elif self.begin.val == obj:
+            self.begin = self.begin.next
+            return 0
+        # else
         # remove the element from list chain, match element
         # do the reattachment between the prev and next
         # how to remember the prev node
@@ -110,6 +119,7 @@ class SingleLinkedList(object):
                     # increment only when moving to
                     # next elment
                     pos += 1
+                print(f"Printing prev in while: {prev}")
 
         # if list has > 1 elements, traverse the list to find the element
 
@@ -141,7 +151,7 @@ class SingleLinkedList(object):
     def get(self, index):
         """Get the value at index."""
         # print("Count in get: ", self.count())
-        if self.count() < index:
+        if self.count() < index or self.count() == 0:
             return None
         else:
             pos = 0
@@ -149,7 +159,10 @@ class SingleLinkedList(object):
             while pos != index and curr.next:
                 curr = curr.next
                 pos += 1
-            return curr.val
+            if pos == index:
+                return curr.val
+            else:
+                None
 
     def dump(self):
         """Debugging function that dumps the contents of the list."""
