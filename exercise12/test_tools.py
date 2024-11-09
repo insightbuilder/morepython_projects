@@ -62,3 +62,18 @@ class Tools_Test(TestCase):
 
     def test_add_num(self):
         assert t.add_num("test1", 1) == "1 test1"
+
+    def test_add_num_eol(self):
+        assert t.add_num_eol("test1", 1) == 2
+        assert t.add_num_eol("\n", 1) == 1
+
+    def test_find_name_inpath(self):
+        assert t.find_name_in_path(
+            path="/home/uberdev/", obj_name="*.log", to_print=False, cliarg=False
+        ) == ["/home/uberdev/jupy.log"]
+        assert (
+            t.find_name_in_path(
+                path="/home/uberdev/", obj_name="*.log", to_print=True, cliarg=False
+            )
+            == []
+        )

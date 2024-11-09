@@ -119,14 +119,22 @@ def add_num(text: str, idx: int):
         return out
 
 
+def add_num_eol(text: str, idx: int):
+    if text != "\n":
+        print(f"{idx} {text}$")
+        return idx + 1
+    else:
+        print("$")
+        return idx
+
+
 def ask_input_num():
     """Echos the input back to user with numbers"""
     idx = 0
     while True:
         temp = input()
-        if temp != "\n":
-            print(f"{idx} {temp}")
-            idx += 1
+        print(add_num(temp, idx))
+        idx += 1
 
 
 def ask_input_num_eol():
@@ -134,11 +142,7 @@ def ask_input_num_eol():
     idx = 0
     while True:
         temp = input()
-        if temp != "\n":
-            print(f"{idx} {temp}$")
-            idx += 1
-        else:
-            print("$")
+        idx = add_num_eol(temp, idx)
 
 
 def ask_input_num_all():

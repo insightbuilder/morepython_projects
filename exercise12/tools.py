@@ -1,3 +1,7 @@
+from glob import glob
+from pathlib import Path
+
+
 def process_file_nonum(filename: str):
     """Prints the file contents without line numbers"""
     no_newline = []
@@ -69,3 +73,49 @@ def add_num(text: str, idx: int):
     if text != "\n":
         out = f"{idx} {text}"
         return out
+
+
+def add_num_eol(text: str, idx: int):
+    if text != "\n":
+        print(f"{idx} {text}$")
+        return idx + 1
+    else:
+        print("$")
+        return idx
+
+
+# Start find.py functions
+
+
+def find_name_in_path(
+    path: str, obj_name: str, to_print: bool, cliarg: bool, obj_type: str = "f"
+):
+    """Prints files and folders in the path that matches the obj_name
+    and obj_type if to_print is true.
+    Else returns the paths of the objects for further
+    processing to exec_name_function
+    obj_name can be:
+        - *.ext
+        - *.*
+        - text*
+        - *text
+        - text
+        ...
+    """
+
+    file_paths = glob(f"{path}/{obj_name}", recursive=True)
+    # stores the paths for returning
+    print(f"{path}/{obj_name}")
+    print(f"Raw path: {file_paths}")
+    path_store = []
+    for path in file_paths:
+        # if to_print is true and final part matches obj_name
+        if to_print and obj_type == "d":
+            if Path(path).is_dir():
+                print(path)
+                continue
+        elif to_print and not cliarg:
+            print(path)
+        else:
+            path_store.append(path)
+    return path_store
