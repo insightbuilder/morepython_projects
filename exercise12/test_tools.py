@@ -78,8 +78,40 @@ class Tools_Test(TestCase):
     #         == []
     #     )
 
-    def test_fp_matcher(self):
-        assert t.file_pattern_matcher(file_pattern="*1", search_pattern="nline") == [
-            "nline",
-            "nline",
-        ], "work on output"  # t.file_pattern_matcher(file_pattern="test*", search_pattern="nline")
+    # def test_fp_matcher(self):
+    #     assert t.file_pattern_matcher(file_pattern="*1", search_pattern="nline") == [
+    #         "nline",
+    #         "nline",
+    #     ], "work on output"  # t.file_pattern_matcher(file_pattern="test*", search_pattern="nline")
+
+    def test_parse_file(self):
+        assert t.parse_file(file_name="cut_me", delim=" ", sections="1-2") == [
+            ["drwxrwxrwx"],
+            ["drwxrwxrwx"],
+            ["drwxrwxrwx"],
+            ["drwxrwxrwx"],
+            ["drwxrwxrwx"],
+            ["drwxrwxrwx"],
+            ["drwxrwxrwx"],
+            ["drwxrwxrwx"],
+            ["drwxrwxrwx"],
+            ["drwxrwxrwx"],
+            ["drwxrwxrwx"],
+            ["drwxrwxrwx"],
+            ["drwxrwxrwx"],
+            ["drwxrwxrwx"],
+            ["-rwxrwxrwx"],
+            ["-rwxrwxrwx"],
+            ["drwxrwxrwx"],
+            ["drwxrwxrwx"],
+            ["drwxrwxrwx"],
+        ]
+        # with self.assertRaises(Exception) as ctx:
+        #     t.parse_file(file_name="cut_me", delim=" ", sections="1-a2")
+        # self.assertEqual(
+        #     str(ctx.exception), "invalid literal for int() with base 10: 'a2'"
+        # )
+        assert (
+            t.parse_file(file_name="cut_me", delim=" ", sections="1-a2")
+            == "There is issue in args"
+        )

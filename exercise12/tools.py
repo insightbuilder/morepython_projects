@@ -152,8 +152,6 @@ def file_pattern_matcher(file_pattern: str, search_pattern: str):
     return matched_objs
 
 
-# todo test exception capture
-# todo
 def parse_stdin(delim: str, sections: str):
     # get the sections
     sec1, sec2 = sections.split("-")
@@ -179,37 +177,40 @@ def parse_stdin(delim: str, sections: str):
     return " ".join(take_sections)
 
 
-# implement the -d, -f and then finally file input
+# todo test exception capture
+# todo test file read parse capture
 def parse_file(file_name: str, delim: str, sections: str):
     # get the sections
-    sec1, sec2 = sections.split("-")
+    sec1m, sec2m = sections.split("-")
     try:
-        sec1 = int(sec1)
-        sec2 = int(sec2)
+        sec1m = int(sec1m)
+        sec2m = int(sec2m)
+
+        # read the file lines
+        take_section = []
+        with open(file_name) as cutd:
+            yourlines = cutd.readlines()
+            # process the lines one by one
+            for line in yourlines:
+                # split the lines with delim
+                line_splits = line.split(delim)
+                # print(line_splits)
+                # get the split_len
+                split_len = len(line_splits)
+                # sec2 is greater than line_splits len,
+                if sec2m > split_len:
+                    # bring the sec2 to split_len
+                    # this will be a challenge when lines have different sections
+                    sec1 = sec1m - 1
+                    sec2 = split_len
+                else:
+                    sec1 = sec1m - 1
+                    sec2 = sec2m - 1
+                # print(sec1, sec2)
+                select_section = line_splits[sec1:sec2]
+                # print(select_section)
+                take_section.append(select_section)
+            return take_section
+
     except Exception as e:
-        print(e)
-    # read the file lines
-    take_section = []
-    with open(file_name) as cutd:
-        yourlines = cutd.readlines()
-        # process the lines one by one
-        for line in yourlines[:5]:
-            # split the lines with delim
-            line_splits = line.split(delim)
-            # print(line_splits)
-            # get the split_len
-            split_len = len(line_splits)
-            # sec2 is greater than line_splits len,
-            if sec2 > split_len:
-                # bring the sec2 to split_len
-                # this will be a challenge when lines have different sections
-                sec1 -= 1
-                sec2 = split_len
-            else:
-                # print(f"Lines split in {split_len} parts")
-                # move the sec1 and 2 by 1
-                sec1 -= 1
-                sec2 -= 1
-            select_section = line_splits[sec1:sec2]
-            print(select_section)
-            # print(" ".join(select_section))
+        return "There is issue in args"
