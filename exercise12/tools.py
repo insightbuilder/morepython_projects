@@ -1,5 +1,6 @@
 from glob import glob
 from pathlib import Path
+import re
 
 
 def process_file_nonum(filename: str):
@@ -119,3 +120,96 @@ def find_name_in_path(
         else:
             path_store.append(path)
     return path_store
+
+
+def file_pattern_matcher(file_pattern: str, search_pattern: str):
+    """Locates the files based on given pattern and reads the lines.
+    Finds the lines that matches the search pattern"""
+    print(f"Recieved file pattern: {file_pattern} and search pattern: {search_pattern}")
+    files = glob(file_pattern)  # this will capture even if single file is given as list
+    # print(f"Matched files: {files}")
+    #     file_line = """[I 2024-10-21 17:19:37.083 ServerApp] Starting buffering for bc93e630-c608-441
+    # d-bbb4-c6d3c5e73bf5:6a94bc89-9f9d-4d4a-8376-895a0ce6add1"""
+    print(files)
+    reobj = re.compile(search_pattern)
+    #     matcher = reobj.search(file_line)
+    #     print(f"Matched patterns: {matcher}")
+    # start working on opening and reading files
+    matched_objs = []
+    for file in files:
+        with open(file) as data:
+            filelines = data.readlines()
+            for line in filelines:
+                # print(f"Before match: {line}")
+                ptrn_search = reobj.search(line)
+                # print(ptrn_search)
+                if ptrn_search:
+                    # print the line
+                    # print(f"After match line: {line}")
+                    print(f"Matched obj: {ptrn_search}")
+                    matched_objs.append(ptrn_search.group())
+            # print(matched_objs)
+    return matched_objs
+
+
+# todo test exception capture
+# todo
+def parse_stdin(delim: str, sections: str):
+    # get the sections
+    sec1, sec2 = sections.split("-")
+    try:
+        sec1 = int(sec1)
+        sec2 = int(sec2)
+    except Exception as e:
+        print(e)
+    # read the file lines
+    print(f"Section 1: {sec1} and Section 2: {sec2}")
+    # process the lines one by one
+    take_sections = []
+    for idx, line in enumerate(stdin):
+        line = line.strip()
+        # split the lines with delim
+        line_splits = line.split(delim)
+        # get the split_len
+        split_len = len(line_splits)
+        sec1 -= 1
+        sec2 -= 1
+        select_section = line_splits[sec1:sec2]
+        take_sections.append(select_section)
+    return " ".join(take_sections)
+
+
+# implement the -d, -f and then finally file input
+def parse_file(file_name: str, delim: str, sections: str):
+    # get the sections
+    sec1, sec2 = sections.split("-")
+    try:
+        sec1 = int(sec1)
+        sec2 = int(sec2)
+    except Exception as e:
+        print(e)
+    # read the file lines
+    take_section = []
+    with open(file_name) as cutd:
+        yourlines = cutd.readlines()
+        # process the lines one by one
+        for line in yourlines[:5]:
+            # split the lines with delim
+            line_splits = line.split(delim)
+            # print(line_splits)
+            # get the split_len
+            split_len = len(line_splits)
+            # sec2 is greater than line_splits len,
+            if sec2 > split_len:
+                # bring the sec2 to split_len
+                # this will be a challenge when lines have different sections
+                sec1 -= 1
+                sec2 = split_len
+            else:
+                # print(f"Lines split in {split_len} parts")
+                # move the sec1 and 2 by 1
+                sec1 -= 1
+                sec2 -= 1
+            select_section = line_splits[sec1:sec2]
+            print(select_section)
+            # print(" ".join(select_section))
