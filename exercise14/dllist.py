@@ -3,6 +3,7 @@ from typing import Optional
 
 # ruff: noqa : F821
 # pyright:reportUndefinedVariable=false
+# pyright:reportOptionalMemberAccess=false
 
 
 class DNode(object):
@@ -42,6 +43,23 @@ class Dlist(object):
     def _invariant(self):
         """Checks if the structure is working correctly by
         ensuring all the invariants mentioned are met"""
+        # if count = 0, the self.begin and self.end is none
+        if self.count() == 0:
+            print("Empty list")
+            assert (
+                self.begin is None and self.end is None
+            ), "self.begin & self.end is not None when count is 0"
+        elif self.count() == 1:
+            print("List with 1 count")
+            assert (
+                self.begin == self.end
+            ), "self.begin is not equal to self.end when count 1"
+            assert self.begin.prev is None, "self.begin.prev is not None"
+            assert self.end.next is None, "self.end.next is not None"
+        else:
+            print("Checks at other situations")
+            assert self.begin.prev is None, "self.begin.prev is not None"
+            assert self.end.next is None, "self.end.next is not None"
 
     def push(self, obj: str):
         """Appends a new value on the end of the list."""
@@ -54,7 +72,6 @@ class Dlist(object):
         # else go to the end of the list
         # keep track of prev also
         else:
-            # print(f"Obj is {obj}")
             curr = self.begin
             prev = curr.prev
             while True:
@@ -63,8 +80,8 @@ class Dlist(object):
                     prev = curr.prev
                 else:
                     break
-            # need to assign the prev value to curr
-            entry.prev = prev
+            # need to assign the prev value of entry to curr
+            entry.prev = curr
             # assign entry as next to that current
             curr.next = entry
             # then assign that curr to self.end
@@ -79,10 +96,39 @@ class Dlist(object):
     def unshift(self):
         """Removes the first item (from begin) and returns it."""
 
-    def detach_node(self, node):
+    def detach_node(self, node: DNode):
         """You'll need to use this operation sometimes, but mostly
         inside remove(). It should take a node, and detach it from the
         list, whether the node is at the front, end, or in the middle."""
+        if self.begin is None and self.end is None:
+            print("Empty List")
+            return None
+
+        elif self.count() == 1:
+            # detach the begin and end nodes
+            if self.begin == node:
+                print("Found node at begin")
+                self.begin = None
+                self.end = None
+            else:
+                return None
+        else:
+            # search for the node by travesing the list
+            curr = self.begin
+            while True:
+                if curr.next:
+                    if curr == node:
+                        print("Found node detaching it")
+                        cprev = curr.prev
+                        cnext = curr.next
+                        cprev.next = cnext
+                        cnext.prev = cprev
+
+                        return curr
+                    curr = curr.next
+        # if I did not find the node then return None
+        print("did not find node")
+        return None
 
     def remove(self, obj):
         """Finds a matching item and removes it from the list."""
@@ -120,7 +166,7 @@ class Dlist(object):
         outstr = ""
         if self.begin is None and self.end is None:
             return "Empty List"
-        elif self.begin:
+        elif self.begin == self.end:
             return str(self.begin)
         else:
             curr = self.begin

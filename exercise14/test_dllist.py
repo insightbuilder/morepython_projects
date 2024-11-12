@@ -5,12 +5,18 @@ from unittest import TestCase
 class Sllist_Test(TestCase):
     def test_push(self):
         colors = Dlist()
+        colors._invariant()
         assert colors.count() == 0
         colors.push("Pthalo Blue")
+        colors._invariant()
         assert colors.count() == 1, colors.count()
         colors.push("Ultramarine Blue")
+        colors.push("Locomotive Lumen")
+        colors.push("Mercury Grey")
+        colors._invariant()
         print(colors.dump())
-        assert colors.count() == 2, colors.count()
+        assert colors.count() == 3, colors.count()
+        print("reached")
 
     # def test_pop(self):
     #     colors = Dlist()
