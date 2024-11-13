@@ -89,12 +89,31 @@ class Dlist(object):
 
     def pop(self):
         """Removes the last item and returns it."""
+        if self.begin is None and self.end is None:
+            return None
+        elif self.begin == self.end:
+            pnode = self.begin
+            self.begin = None
+            self.end = None
+            return pnode.val
+        else:
+            # assign last node to pnode
+            pnode = self.end
+            # get the prev node and assign to end_node
+            end_node = self.end.prev
+            # make end's next node to None
+            end_node.next = None
+            # make end node self.end
+            self.end = end_node
+            return pnode.val
 
     def shift(self, obj):
         """Actually just another name for push."""
+        self.push(obj)
 
     def unshift(self):
         """Removes the first item (from begin) and returns it."""
+        first_node = self.begin
 
     def detach_node(self, node: DNode):
         """You'll need to use this operation sometimes, but mostly
@@ -104,14 +123,13 @@ class Dlist(object):
             print("Empty List")
             return None
 
-        elif self.count() == 1:
+        elif self.count() == 1 and self.begin == node:
             # detach the begin and end nodes
-            if self.begin == node:
-                print("Found node at begin")
-                self.begin = None
-                self.end = None
-            else:
-                return None
+            print("Found node at begin")
+            self.begin = None
+            self.end = None
+            return node
+
         else:
             # search for the node by travesing the list
             curr = self.begin
@@ -126,18 +144,74 @@ class Dlist(object):
 
                         return curr
                     curr = curr.next
-        # if I did not find the node then return None
-        print("did not find node")
-        return None
+                else:
+                    # if I did not find the node then return None
+                    print("did not find node")
+                    return None
 
-    def remove(self, obj):
-        """Finds a matching item and removes it from the list."""
+    def remove(self, obj: str):
+        """Finds a matching item and removes it from the list.
+        Returns the index of the removed item"""
+        # assert self.count() == 1, self.count()
+
+        if self.begin is None and self.end is None:
+            print("Empty List")
+            return None
+
+        elif self.begin.val == obj:
+            # detach the begin
+            print("Found node at begin")
+            # check if the begin and end node are same
+            if self.begin == self.end:
+                self.begin = None
+                self.end = None
+                return 0
+            else:  # else there are more elements,
+                # then assign begin to begin.next
+                # then return the element index
+                self.begin = self.begin.next
+                return 0
+
+        elif self.end.val == obj:
+            print("Found node at end")
+            # assign last node to end_node
+            end_node = self.end.prev
+            cnt = self.count()
+            # make end's next node to None
+            end_node.next = None
+            # make end node self.end
+            self.end = end_node
+            return cnt
+
+        else:
+            # search for the node by travesing the list
+            curr = self.begin
+            idx = 0
+            while True:
+                if curr.next:
+                    if curr.val == obj:
+                        print("Found node detaching it")
+                        cprev = curr.prev
+                        cnext = curr.next
+                        cprev.next = cnext
+                        cnext.prev = cprev
+
+                        return idx
+
+                    curr = curr.next
+                    idx += 1
+                else:
+                    # if I did not find the node then return None
+                    print("did not find node")
+                    return None
 
     def first(self):
         """Returns a *reference* to the first item, does not remove."""
+        return self.begin.val
 
     def last(self):
         """Returns a reference to the last item, does not remove."""
+        return self.end.val
 
     def count(self):
         """Counts the number of elements in the list."""
