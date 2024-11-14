@@ -234,6 +234,23 @@ class Dlist(object):
 
     def get(self, index):
         """Get the value at index."""
+        if self.count() == 0 or index > self.count():
+            return None
+        elif index == 0:
+            return self.begin.val
+        elif index == self.count():
+            return self.end.val
+        else:
+            len = 0
+            curr = self.begin
+            while True:
+                if curr.next:
+                    curr = curr.next
+                    len += 1
+                    if len == index:
+                        return curr.val
+                else:
+                    return None
 
     def dump(self):
         """Debugging function that dumps the contents of the list"""

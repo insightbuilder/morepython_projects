@@ -1,0 +1,19 @@
+session: 2024-11-11 06:15 to 06:42
+
+session: 2024-11-12 06:17 to 06:36 to solve push()
+
+session: 2024-11-12 06:36 to 06:55 to solve
+invariant()
+
+session: 2024-11-12 06:55 to 07:08 work on
+detach()
+
+session: 2024-11-13 06:54 to 07:32 on remove()
+
+session: 2024-11-13 07:33 to 07:43 on pop() and
+rest
+
+session: 2024-11-14 20:00 to 20:16 completed all
+test cases
+
+session: 2024-11-14 20:20 to 21:04
