@@ -1,5 +1,8 @@
+#!/bin/python3
+
 from datetime import datetime
 from typing import List
+from argparse import ArgumentParser
 
 
 def get_session(session_file: str):
@@ -38,3 +41,20 @@ def get_total_time(session_file: str):
         # print(get_interval_diff(intr))
         time_used += get_interval_diff(intr)
     return time_used
+
+
+if __name__ == "__main__":
+    sesparser = ArgumentParser(
+        prog="Session Parsers",
+        usage="""
+    parse_session session_data.txt
+    """,
+    )
+    sesparser.add_argument("file", help="provide file name")
+
+    sesargs = sesparser.parse_args()
+
+    if sesargs.file:
+        print(f"Time used: {get_total_time(sesargs.file)}")
+    else:
+        print("Check usage...")
