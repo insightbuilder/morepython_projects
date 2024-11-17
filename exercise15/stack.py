@@ -46,8 +46,10 @@ class DStack(object):
             return
         # else there is a top node, then make
         # it as a snode's next
-        snode.next = self.top
-        self.top = snode
+        else:
+            snode.next = self.top
+            self.top = snode
+            return
 
     def pop(self):
         """Pop the value at the top"""
@@ -59,12 +61,24 @@ class DStack(object):
             self.top = curr.next
             return curr.val
 
-    def top(self):
+    def topoff(self):
         """Returns the reference to the top value"""
+        # print("inside top", self.top.val)
         return self.top.val
 
     def dump(self):
         """Prints the value of all the elements"""
+        if self.top is None:
+            return "Empty stack"
+        send = ""
+        curr = self.top
+        send += f"{repr(curr)}"
+        while True:
+            if curr.next:
+                curr = curr.next
+                send += f"{repr(curr)}"
+            else:
+                return send
 
     def count(self):
         """Count the elements in the stack"""
