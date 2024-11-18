@@ -9,13 +9,15 @@
 
 class QueNode(object):
 
-    def __init__(self, val, nxt=None) -> None:
+    def __init__(self, val, nxt=None, prv=None) -> None:
         self.val = val
         self.next = nxt
+        self.prev = prv
 
     def __repr__(self) -> str:
         nval = self.next and self.next.val
-        return f"[{self.val}: {repr(nval)}]"
+        pval = self.prev and self.prev.val
+        return f"[{repr(pval)}: {self.val} :{repr(nval)}]"
 
 
 class QueDS(object):
@@ -23,14 +25,41 @@ class QueDS(object):
         self.front = None
         self.back = None
 
-    def enque(self, queval):
+    def _invariant(self):
         pass
+
+    def enque(self, queval):
+        toque = QueNode(queval)
+        if self.front is None and self.back is None:
+            self.front = toque
+            self.back = self.front
+            return
+        # if self.front is self.back
+        # then assign node to back
+        # not the case then enque to back, remember
+        # qnode is dbl_link list
+        else:
+            # print("else in enque", self.back)
+            bnode = self.back
+            bnode.next = toque
+            toque.prev = bnode
+            self.back = toque
 
     def deque(self):
         pass
 
     def traverse(self):
-        pass
+        if self.front is None and self.back is None:
+            return "Empty List"
+        else:
+            curr = self.front
+            out = repr(curr)
+            while True:
+                if curr.next:
+                    curr = curr.next
+                    out += repr(curr)
+                else:
+                    return out
 
     def show_front(self):
         return self.front.val
@@ -39,4 +68,19 @@ class QueDS(object):
         return self.back.val
 
     def count(self):
-        pass
+        # print("front", self.front)
+        # print("back", self.back)
+        if self.front is None and self.back is None:
+            return 0
+        elif self.back is self.front:
+            return 1
+        else:
+            cnt = 1
+            curr = self.front
+            while True:
+                if curr.next:
+                    print("in count while", curr)
+                    cnt += 1
+                    curr = curr.next
+                else:
+                    return cnt

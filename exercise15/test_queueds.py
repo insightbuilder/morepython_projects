@@ -5,23 +5,26 @@ from unittest import TestCase
 class TestQueDS(TestCase):
     def test_quenode(self):
         node1 = QueNode(5)
-        assert repr(node1) == "[5: None]", repr(node1)
+        assert repr(node1) == "[None: 5 :None]", repr(node1)
 
     def test_enque(self):
         colors = QueDS()
+        assert colors.count() == 0, colors.count()
         colors._invariant()
-        assert colors.count() == 0
         colors.enque("Pthalo Blue")
-        print(colors.traverse())
+        assert colors.show_back() == "Pthalo Blue"
+        # print(colors.traverse())
         assert colors.count() == 1, colors.count()
         colors._invariant()
         colors.enque("Ultramarine Blue")
         colors.enque("Locomotive Lumen")
+        assert colors.show_back() == "Locomotive Lumen"
         colors.enque("Mercury Grey")
-        colors._invariant()
+        assert colors.show_back() == "Mercury Grey"
+        # colors._invariant()
         print(colors.traverse())
         assert colors.count() == 4, colors.count()
-        print("reached")
+        # print("reached")
 
     # def test_deque(self):
     #     colors = QueDS()
