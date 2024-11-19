@@ -214,3 +214,27 @@ def parse_file(file_name: str, delim: str, sections: str):
 
     except Exception as e:
         return "There is issue in args"
+
+
+def process_line(line: str, expr: str, tgt: str):
+    """str_output = re.sub(regex_search_term, regex_replacement, str_input)"""
+    print(line, "in sed process line")
+    updt_line = re.sub(expr, tgt, line)
+    return updt_line
+
+
+def parse_file_sed(file_name: str, expr: str, output: bool):
+    """Takes the expression and replaces in the given stream"""
+    regex = expr.split("\\")[1]
+    target = expr.split("\\")[2]
+    lines = []
+    with open(file_name) as fn:
+        datain = fn.readlines()
+        for line in datain:
+            # each line will be processed and then printed
+            updt = process_line(line=line, expr=regex, tgt=target)
+            lines.append(updt)
+    if output:
+        return lines
+    else:
+        return " "

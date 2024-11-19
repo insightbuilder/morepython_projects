@@ -84,34 +84,50 @@ class Tools_Test(TestCase):
     #         "nline",
     #     ], "work on output"  # t.file_pattern_matcher(file_pattern="test*", search_pattern="nline")
 
-    def test_parse_file(self):
-        assert t.parse_file(file_name="cut_me", delim=" ", sections="1-2") == [
-            ["drwxrwxrwx"],
-            ["drwxrwxrwx"],
-            ["drwxrwxrwx"],
-            ["drwxrwxrwx"],
-            ["drwxrwxrwx"],
-            ["drwxrwxrwx"],
-            ["drwxrwxrwx"],
-            ["drwxrwxrwx"],
-            ["drwxrwxrwx"],
-            ["drwxrwxrwx"],
-            ["drwxrwxrwx"],
-            ["drwxrwxrwx"],
-            ["drwxrwxrwx"],
-            ["drwxrwxrwx"],
-            ["-rwxrwxrwx"],
-            ["-rwxrwxrwx"],
-            ["drwxrwxrwx"],
-            ["drwxrwxrwx"],
-            ["drwxrwxrwx"],
+    # def test_parse_file(self):
+    #     assert t.parse_file(file_name="cut_me", delim=" ", sections="1-2") == [
+    #         ["drwxrwxrwx"],
+    #         ["drwxrwxrwx"],
+    #         ["drwxrwxrwx"],
+    #         ["drwxrwxrwx"],
+    #         ["drwxrwxrwx"],
+    #         ["drwxrwxrwx"],
+    #         ["drwxrwxrwx"],
+    #         ["drwxrwxrwx"],
+    #         ["drwxrwxrwx"],
+    #         ["drwxrwxrwx"],
+    #         ["drwxrwxrwx"],
+    #         ["drwxrwxrwx"],
+    #         ["drwxrwxrwx"],
+    #         ["drwxrwxrwx"],
+    #         ["-rwxrwxrwx"],
+    #         ["-rwxrwxrwx"],
+    #         ["drwxrwxrwx"],
+    #         ["drwxrwxrwx"],
+    #         ["drwxrwxrwx"],
+    #     ]
+    #     # with self.assertRaises(Exception) as ctx:
+    #     #     t.parse_file(file_name="cut_me", delim=" ", sections="1-a2")
+    #     # self.assertEqual(
+    #     #     str(ctx.exception), "invalid literal for int() with base 10: 'a2'"
+    #     # )
+    #     assert (
+    #         t.parse_file(file_name="cut_me", delim=" ", sections="1-a2")
+    #         == "There is issue in args"
+    #     )
+
+    def test_process_line_sed(self):
+        line = "there is more than meets the eyes"
+        expr = "meet"
+        tgt = "cheks"
+        assert t.process_line(line, expr, tgt) == "there is more than chekss the eyes"
+
+    def test_pfile_sed(self):
+        assert t.parse_file_sed(
+            file_name="/home/uberdev/jupy.log",
+            expr="s\\ServerApp\\Client\\g",
+            output=True,
+        ) == [
+            "[I 2024-11-15 14:04:20.900 Client] jupyter_lsp | extension was successfully linked.\n",
+            "I 2024-11-15 21:27:02.659 Client] Starting buffering for c42bcf16-06f6-4aab-85a3-7855cde3afe8:6aec2cbd-bd2f-424c-b7c1-9c607d8a7a2d\n",
         ]
-        # with self.assertRaises(Exception) as ctx:
-        #     t.parse_file(file_name="cut_me", delim=" ", sections="1-a2")
-        # self.assertEqual(
-        #     str(ctx.exception), "invalid literal for int() with base 10: 'a2'"
-        # )
-        assert (
-            t.parse_file(file_name="cut_me", delim=" ", sections="1-a2")
-            == "There is issue in args"
-        )

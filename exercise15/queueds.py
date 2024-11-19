@@ -46,7 +46,23 @@ class QueDS(object):
             self.back = toque
 
     def deque(self):
-        pass
+        if self.front is None and self.back is None:
+            return None
+        # check if self.front is back
+        elif self.front is self.back:
+            deq = self.front
+            self.front = None
+            self.back = None
+            return deq.val
+
+        elif self.front:
+            deq = self.front
+            next = self.front.next
+            next.prev = None
+            self.front = next
+            return deq.val
+        else:
+            print("place holder")
 
     def traverse(self):
         if self.front is None and self.back is None:
